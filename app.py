@@ -1,26 +1,28 @@
+import psycopg2
 from psycopg2 import connect, extras
 from flask import Flask, request, jsonify
-from cryptography.fernet import Fernet # encripta los pass
+from cryptography.fernet import Fernet  # encripta los pass
 from psycopg2 import connect
+
+from config import config_postgres, config
 
 app = Flask(__name__)
 key = Fernet.generate_key()
 
-host = 'localhost'
-port = '5432'
-database = 'db_lapalma'
-user = 'postgres'
-password = 'noacanoa'
-
 
 def get_connection():
 
-    conn = connect(host=host, database=database,  user=user, port=port, password=password)
-    return conn
+    try:
+        params = config_postgres()
+        conn = psycopg2.connect(**params)
+        return conn
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
 
 
 @app.get('/api/users')
 def get_users():
+    conn = None
     conn = get_connection()
     cur = conn.cursor(cursor_factory=extras.RealDictCursor)
 
@@ -28,13 +30,16 @@ def get_users():
     users = cur.fetchall()  # retorna mas de 1 resultado
 
     cur.close()
-    conn.close()
+
+    if conn is not None:
+        conn.close()
 
     return jsonify(users)
 
 
 @app.post('/api/users')
 def create_user():
+    conn = None
     new_user = request.get_json()
 
     username = new_user['username']
@@ -48,19 +53,18 @@ def create_user():
                 (username, mypassword, email))
 
     new_user = cur.fetchone()
-
-    print(new_user)
     conn.commit()
 
     cur.close()
-    conn.close()
+    if conn is not None:
+        conn.close()
 
     return jsonify(new_user)
 
 
 @app.put('/api/users/<id>')
 def update_user(id):
-
+    conn = None
     conn = get_connection()
     cur = conn.cursor(cursor_factory=extras.RealDictCursor)
 
@@ -77,10 +81,11 @@ def update_user(id):
     conn.commit()
 
     cur.close()
-    conn.close()
+    if conn is not None:
+        conn.close()
 
     if user_new is None:
-        return jsonify({'message': 'update user'}), 404
+        return jsonify({'message': 'user not found'}), 404
 
     return jsonify(user_new)
 
@@ -88,6 +93,7 @@ def update_user(id):
 @app.delete('/api/users/<id>')
 def delete_user(id):
 
+    conn = None
     conn = get_connection()
     cur = conn.cursor(cursor_factory=extras.RealDictCursor)
 
@@ -97,7 +103,8 @@ def delete_user(id):
     conn.commit()
 
     cur.close()
-    conn.close()
+    if conn is not None:
+        conn.close()
 
     if usuario is None:
         return jsonify({'message': 'User not found'}), 404
@@ -107,12 +114,17 @@ def delete_user(id):
 
 @app.get('/api/users/<id>')
 def get_user(id):
-
+    conn = None
     conn = get_connection()
     cur = conn.cursor(cursor_factory=extras.RealDictCursor)
 
     cur.execute('SELECT * FROM users WHERE id = %s', (id,))
     usuario = cur.fetchone()
+
+    cur.close()
+
+    if conn is not None:
+        conn.close()
 
     if usuario is None:
         return jsonify({'message': 'User not found'}), 404
@@ -121,4 +133,5 @@ def get_user(id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.config.from_object(config['development'])
+    app.run()
