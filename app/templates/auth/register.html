@@ -1,0 +1,30 @@
+{% extends './base.html' %}
+
+{% block title %}
+Registrar
+{% endblock %}
+
+{% block CustomCSS %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/signin.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="form-signin w-100 m-auto">
+    <form class="text-center">
+        <h1 class="h3 mb-3 fw-formal">Registrar</h1>
+
+    <div class="form-floating">
+        <input type="text" class="form-control" id="floatingInput" name="username" placeholder="Ingrese su username">
+        <label for="floatingInput">U</label>
+    </div>
+    <div class="form-floating">
+        <input type="password" class="form-contrl" id="floatingPassword" name="password" placeholder="Passwordd">
+        <label for="floatingPassword">Password</label>
+    </div>
+
+
+</form>
+</main>
+
+
+{% endblock %}
