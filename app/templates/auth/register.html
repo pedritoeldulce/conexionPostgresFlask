@@ -1,0 +1,38 @@
+{% extends './base.html' %}
+
+{% block title %}
+Registrar
+{% endblock %}
+
+{% block CustomCSS %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/signin.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="form-signin w-100 m-auto">
+<form class="text-center" action="/register" method="post">
+
+    <h2 class="mb-3">Formulario</h2>
+    <div class="form-floating">
+        <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+        <label for="username">Username</label>
+    </div>
+    <div class="form-floating">
+        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+        <label for="email">Email</label>
+    </div>
+    <div class="form-floating">
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+        <label for="password">Password</label>
+    </div>
+
+    <button class="w-100 btn btn-primary" type="submit">Registrar</button>
+
+</form>
+
+    <a href="{{url_for('page.login')}}">
+        <button class="mt-2 w-100 btn btn-danger">Cancelar</button>
+    </a>
+</main>
+
+{% endblock %}

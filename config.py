@@ -2,12 +2,11 @@ from configparser import ConfigParser
 
 
 class Config:
-    pass
+    SECRET_KEY = '@Nocacanoa23'
 
 
 class DevelopmentConfig(Config):
     DEBUG = True
-
 
 config = {
     'development': DevelopmentConfig,

@@ -1,0 +1,12 @@
+{% extends './base.html'%}
+{% block body %}
+
+  {% block content %}
+
+  {% include 'layout.html' %}
+
+  <h1>INDeX</h1>
+  <p>Do you want to <a href="{{ url_for('page.login') }}">log in?</a>
+  {% endblock %}
+
+{% endblock %}

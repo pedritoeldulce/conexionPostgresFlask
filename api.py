@@ -1,6 +1,6 @@
 import psycopg2
 from psycopg2 import connect, extras
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from cryptography.fernet import Fernet  # encripta los pass
 from psycopg2 import connect
 
@@ -18,6 +18,11 @@ def get_connection():
         return conn
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
+
+
+@app.route('/')
+def index():
+    return "NOacanoa"
 
 
 @app.get('/api/users')

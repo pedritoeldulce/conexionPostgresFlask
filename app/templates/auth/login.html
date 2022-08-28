@@ -1,0 +1,39 @@
+{% extends './base.html' %}
+
+{% block title %} Login {% endblock %}
+
+{% block CustomCSS %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/signin.css') }}">
+{% endblock %}
+
+{% block content %}
+
+    <main class="form-signin w-100 m-auto">
+
+        {% include 'layout.html' %}
+
+        <form class="text-center" action="/login" method="POST">
+            <img class="mb-4" src="{{url_for('static', filename='img/login_img.png')}}" alt="" width="102" height="87">
+            <h1 class="h3 mb-3 fw-normal">Registrese</h1>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInput" name="username" placeholder="Username">
+                <label for="floatingInput">Username</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password">
+                <label for="floatingPassword">Password</label>
+            </div>
+
+            <!--<div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>-->
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Ingresar</button>
+            <p class="mt-3 text-muted">¿No tiene una cuenta? <a href="{{url_for('page.register')}}">Registrese Gratis</a></p>
+            <p class="mt-2 mb-3 text-muted">&copy; 2017–2022</p>
+        </form>
+    </main>
+
+{% endblock %}
