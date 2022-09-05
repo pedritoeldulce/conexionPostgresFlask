@@ -2,7 +2,6 @@ import psycopg2
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, flash
 from config import config_postgres
 
-
 # models
 from .models.ModelUser import ModelUser
 
@@ -26,8 +25,17 @@ def get_connection():
 
 @page.route('/')
 def index():
-    return redirect(url_for('page.login'))
-    #return render_template('index.html')
+
+    users = ModelUser.get_users()
+    # verificar si se envió correctamente los usuarios a la vista index
+    #return redirect(url_for('page.login'), users=users)
+    return render_template('index.html', users=users)
+
+
+@page.route('/users')
+def get_users():
+    users = ModelUser.get_users()
+    return render_template('user/users.html', users=users)
 
 
 @page.route('/register', methods=['POST', 'GET'])
@@ -73,5 +81,7 @@ def login():
 
             return render_template('auth/login.html')
     else:
+        #flash("Logout", "success")
+        #falta corregir, aparece cada vez que refrescamos
         return render_template('auth/login.html')
 

@@ -1,0 +1,62 @@
+{% extends './base_index.html'%}
+
+{% block title %} Usuarios {% endblock %}
+
+{% block CustomCSS %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/sider_menu.css')}}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+        <h1>Usuarios</h1>
+        <table class="table border border-primary">
+          <thead class="table-primary">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Username</th>
+              <th scope="col">Email</th>
+              <th scope="col">Password</th>
+            </tr>
+          </thead>
+
+          <tboby>
+              {% for user in users %}
+            <tr>
+                <td>{{user[0]}}</td>
+                <td>{{user[1]}}</td>
+                <td>{{user[3]}}</td>
+                <td>{{user[2]}}</td>
+            </tr>
+              {% endfor %}
+          </tboby>
+        </table>
+      </div>
+{% endblock %}
+
+
+
+<!--<div class="container">
+        <h1>Usuarios</h1>
+        <table class="table border border-primary">
+          <thead class="table-primary">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Username</th>
+              <th scope="col">Email</th>
+              <th scope="col">Password</th>
+            </tr>
+          </thead>
+
+          <tboby>
+              {% for user in users %}
+            <tr>
+                <td>{{user[0]}}</td>
+                <td>{{user[1]}}</td>
+                <td>{{user[3]}}</td>
+                <td>{{user[2]}}</td>
+            </tr>
+              {% endfor %}
+          </tboby>
+        </table>
+      </div>-->

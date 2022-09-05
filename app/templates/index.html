@@ -1,12 +1,21 @@
-{% extends './base.html'%}
-{% block body %}
+{% extends './base_index.html'%}
+
+{% block title %} INDEX {% endblock %}
+
+{% block CustomCSS %}
+
+{% endblock %}
+
+
+
 
   {% block content %}
 
-  {% include 'layout.html' %}
+      {% include 'layout.html' %}
 
-  <h1>INDeX</h1>
-  <p>Do you want to <a href="{{ url_for('page.login') }}">log in?</a>
+
+
+
+
+
   {% endblock %}
-
-{% endblock %}

@@ -11,6 +11,31 @@ from .entities.User import User
 class ModelUser():
 
     @classmethod
+    def get_users(cls):
+
+        try:
+            conn = get_connection()
+            cur = conn.cursor()
+
+            cur.execute('SELECT * FROM users')
+            users = cur.fetchall()
+            cur.close()
+
+            if conn is not None:
+                conn.close()
+
+            if users is not None:
+                return users
+
+            else:
+                return "Error en la consulta de usuarios XD"
+
+        except Exception as ex:
+            raise Exception(ex)
+
+
+
+    @classmethod
     def login(self, user):
 
         try:
