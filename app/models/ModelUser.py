@@ -1,5 +1,6 @@
 from config import config_postgres
 import psycopg2
+from psycopg2 import extras
 from .entities.User import User
 
 # Encriptar password
@@ -17,8 +18,10 @@ class ModelUser():
             conn = get_connection()
             cur = conn.cursor()
 
+            #cur = conn.cursor(cursor_factory=extras.RealDictCursor)
             cur.execute('SELECT * FROM users')
             users = cur.fetchall()
+
             cur.close()
 
             if conn is not None:
@@ -33,7 +36,27 @@ class ModelUser():
         except Exception as ex:
             raise Exception(ex)
 
+    @classmethod
+    def get_user(self, user_id):
 
+        try:
+            conn = get_connection()
+            cur = conn.cursor()
+
+            cur.execute('SELECT * FROM users WHERE id = %s', (user_id,))
+            user = cur.fetchone()
+
+            cur.close()
+            if conn is not None:
+                conn.close()
+
+            if user is not None:
+                return user
+            else:
+                return None
+
+        except Exception as ex:
+            raise Exception(ex)
 
     @classmethod
     def login(self, user):
@@ -99,6 +122,56 @@ class ModelUser():
 
         # opcion 1: cambiar el tipo de datos de password en la DB
         # opcion 2: doble cambio de datos variables, bytes -> string, string -> bytes
+
+    @classmethod
+    def update(cls, user):
+        try:
+            conn = get_connection()
+            cur = conn.cursor()
+            print("usuario:", user.id, user.username)
+            cur.execute('UPDATE users SET username = %s, password = %s, email = %s WHERE id = %s RETURNING *',
+                        (user.username, user.password, user.email, user.id))
+
+            user_update = cur.fetchone()
+            conn.commit()
+            print("usuario actualizado:", user_update)
+            cur.close()
+
+            if conn is not None:
+                conn.close()
+
+            if user_update is not None:
+                return user_update
+            else:
+                return None
+
+        except Exception as ex:
+            raise Exception(ex)
+
+
+    @classmethod
+    def delete(self, user_id):
+        try:
+            conn = get_connection()
+            cur = conn.cursor()
+            cur.execute('DELETE FROM users WHERE id = %s RETURNING *', (user_id,))
+            user = cur.fetchone()
+
+            print(user)
+
+            conn.commit()
+            cur.close()
+
+            if conn is not None:
+                conn.close()
+
+            if user is not None:
+                return user
+
+            else:
+                return None
+        except Exception as ex:
+            raise Exception(ex)
 
 
 def get_connection():

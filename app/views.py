@@ -11,30 +11,18 @@ from .models.entities.User import User
 page = Blueprint('page', __name__)
 
 
-def get_connection():
-
-    try:
-        params = config_postgres()
-        conn = psycopg2.connect(**params)
-
-        return conn
-
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-
-
 @page.route('/')
 def index():
 
     users = ModelUser.get_users()
-    # verificar si se envió correctamente los usuarios a la vista index
-    #return redirect(url_for('page.login'), users=users)
+
     return render_template('index.html', users=users)
 
 
 @page.route('/users')
 def get_users():
     users = ModelUser.get_users()
+    print(users)
     return render_template('user/users.html', users=users)
 
 
@@ -85,3 +73,45 @@ def login():
         #falta corregir, aparece cada vez que refrescamos
         return render_template('auth/login.html')
 
+
+@page.route('/users/edit/<int:user_id>')
+def edit_user(user_id):
+
+    user = ModelUser.get_user(user_id)
+
+    return render_template('user/user_edit.html', user_id=user_id, user=user)
+
+
+@page.route('/users/update/<id>', methods=['POST', 'GET'])
+def update_user(id):
+
+    if request.method == 'POST':
+        new_username = request.form['username']
+        new_email = request.form['email']
+        new_pass = request.form['password']
+
+        user = User(id, new_username, new_pass, new_email, "")
+        updated_user = ModelUser.update(user)
+
+        if updated_user is not None:
+            flash("Usuario actualizado exitosamente", "success")
+
+            return redirect(url_for('page.get_users'))
+        else:
+            flash("Error al actualizar usuario", "danger")
+            print("Error al actualizar")
+            return redirect(url_for('page.get_users'))
+
+    #return redirect(url_for('page.get_users'))
+
+
+@page.route('/users/delete/<id_user>')
+def delete_user(id_user):
+    print(id_user)
+    user_delete = ModelUser.delete(id_user)
+
+    if user_delete is not None:
+        flash("Usuario Eliminado exitosamente", "success")
+        return redirect(url_for('page.get_users'))
+
+    return render_template('user/users.html')

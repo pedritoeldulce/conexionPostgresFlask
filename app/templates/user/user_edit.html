@@ -1,0 +1,53 @@
+{% extends './base_index.html' %}
+
+{% block title %} Editar Usuario {% endblock %}
+
+{% block CustomCSS %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/edit_user.css')}}">
+{% endblock CustomCSS %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h1 class="pb-4">Usuario a Editar</h1>
+
+    <form action="/users/update/{{user[0]}}" method="post">
+        <div class="row mt-3 justify-content-center">
+            <label for="inputUsername" class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="inputUsername" name="username" value="{{user[1]}}">
+            </div>
+        </div>
+
+        <div class="row mt-3 justify-content-center">
+            <label for="email" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-5">
+                <input type="email" class="form-control" id="email" name="email" value="{{user[3]}}" >
+            </div>
+        </div>
+        <div class="row mt-3 justify-content-center">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="inputPassword" name="password" value="{{user[2]}}">
+            </div>
+        </div>
+
+        <div class="d-grid gap-2 mt-3 button-w">
+            <div class="col-form-label">
+                    <button  class="btn btn-primary" type="submit">Aceptar</button>
+            </div>
+
+        </div>
+
+    </form>
+        <div class="d-grid gap-2 button-w">
+            <div class="col-form-label">
+                <a href="{{url_for('page.get_users')}}">
+                    <button class="btn btn-danger">Cancelar</button>
+                </a>
+            </div>
+        </div>
+
+
+</div>
+
+{% endblock %}

@@ -3,32 +3,53 @@
 {% block title %} Usuarios {% endblock %}
 
 {% block CustomCSS %}
-<link rel="stylesheet" href="{{url_for('static', filename='css/sider_menu.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/edit_user.css')}}">
 {% endblock %}
 
 {% block content %}
 
+{% include 'layout.html' %}
+
 <div class="container">
-        <h1>Usuarios</h1>
-        <table class="table border border-primary">
+        <h1>Lista de Usuarios</h1>
+        <table class="table table-hover">
           <thead class="table-primary">
             <tr>
-              <th scope="col">#</th>
+              <!--<th scope="col">#</th>-->
               <th scope="col">Username</th>
               <th scope="col">Email</th>
               <th scope="col">Password</th>
+
+              <th></th>
+
             </tr>
           </thead>
 
           <tboby>
               {% for user in users %}
+
             <tr>
-                <td>{{user[0]}}</td>
+                <!--<td>{{user[0]}}</td>-->
                 <td>{{user[1]}}</td>
                 <td>{{user[3]}}</td>
                 <td>{{user[2]}}</td>
+                <td>
+
+
+                    <a href="{{url_for('page.edit_user', user_id=user[0])}}">
+                            <button class=" btn btn-primary">Editar</button>
+                    </a>
+
+
+                    <a href="{{url_for('page.delete_user', id_user=user[0])}}" class="btn btn-danger">Eliminar</a>
+
+                </td>
+
+                <!-- Falta enviar al usuario y funcionalidad de "update y delete"-->
             </tr>
               {% endfor %}
+
+
           </tboby>
         </table>
       </div>
