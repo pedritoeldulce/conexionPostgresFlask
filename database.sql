@@ -6,31 +6,34 @@ CREATE TABLE users (
 );
 
 CREATE TABLE guia_remision (
-    id_guia PRIMARY KEY NOT NULL,
-    numero INTEGER NOT NULL,
+    id_guia SERIAL PRIMARY KEY NOT NULL,
+    numero VARCHAR (6) NOT NULL,
     punto_partida VARCHAR(255) NOT NULL,
     punto_llegada VARCHAR(255) NOT NULL,
     destinatario VARCHAR(255) NOT NULL,
     descripcion VARCHAR (255) NOT NULL,
     cantidad VARCHAR (255) NOT NULL,
-    fecha_traslado TIMESTAMP NOt NULL ,
+    fecha_traslado DATE NOt NULL ,
     id_trasportista foreign key,
 )
 
 CREATE TABLE camion (
-    id_camion PRIMARY KEY NOT NULL,
-    placa VARCHAR(10) NOT NULL,
-    marca varchar (30) NOT NULL,
-    tara FLOAT NOT NULL,
-    peso_neto FLOAT NOT NULL
+    id SERIAL PRIMARY KEY NOT NULL,
+    placa VARCHAR(7) NOT NULL,
+    marca VARCHAR (30) NOT NULL,
+    p_bruto DECIMAL(6,3) NOT NULL,
+    p_neto DECIMAL (6,3) NOT NULL,
+    carga_util DECIMAL (6,3) NOT NULL
 )
 
 CREATE TABLE conductor (
-    id_conductor PRIMARY KEY NOT NULL,
+    id SERIAL PRIMARY KEY NOT NULL,
     nombres VARCHAR (255) NOT NULL,
     apellidos VARCHAR (255) NOT NULL,
-    licencia VARCHAR (255) NOT NULL,
-    dni INTEGER NOT NULL
+    licencia VARCHAR (10) NOT NULL,
+    clase CHAR(1) NOT NULL,
+    categoria VARCHAR(10) NOT NULL,
+    telf VARCHAR (10) NOT NULL
 )
 
 /*

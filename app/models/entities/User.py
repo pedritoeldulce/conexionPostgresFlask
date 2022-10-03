@@ -1,5 +1,4 @@
 
-
 class User():
 
     def __init__(self, id, username, password, email, created_at) -> None:
@@ -17,3 +16,5 @@ class User():
             return True
         else:
             return False
+
+
